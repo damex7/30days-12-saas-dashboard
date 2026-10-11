@@ -431,5 +431,12 @@ export async function getShowcase() {
     .slice(0, 4)
   const outstanding = sumKobo(all.filter((i) => i.status === 'sent' || i.status === 'overdue').map((i) => i.total))
   const overdue = sumKobo(all.filter((i) => i.status === 'overdue').map((i) => i.total))
-  return { months, recent, outstanding, overdue, collected: months.at(-2)?.collected ?? 0 }
+  return {
+    months,
+    recent,
+    outstanding,
+    overdue,
+    collected: months.at(-2)?.collected ?? 0,
+    previousCollected: months.at(-3)?.collected ?? 0,
+  }
 }

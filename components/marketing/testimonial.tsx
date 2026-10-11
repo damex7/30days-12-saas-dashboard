@@ -27,8 +27,8 @@ export function Testimonial({
   return (
     <figure
       className={cn(
-        'flex h-full flex-col gap-5',
-        tone === 'card' && 'rounded-card border border-line bg-raised p-6 shadow-card',
+        'flex flex-col gap-5',
+        tone === 'card' && 'h-full rounded-card border border-line bg-raised p-6 shadow-card',
         tone === 'brand' && 'text-brand-ink',
         className,
       )}

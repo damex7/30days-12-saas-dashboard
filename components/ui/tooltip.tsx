@@ -27,11 +27,15 @@ export function Tooltip({
   content,
   side = 'top',
   className,
+  wrapperClassName,
   children,
 }: {
   content: ReactNode
   side?: 'top' | 'right' | 'bottom'
+  /** Styles the bubble. */
   className?: string
+  /** Styles the wrapper around the trigger (e.g. `flex w-full` for a full-width link). */
+  wrapperClassName?: string
   children: (props: { 'aria-describedby': string }) => ReactNode
 }) {
   const [open, setOpen] = useState(false)
@@ -58,7 +62,7 @@ export function Tooltip({
 
   return (
     <span
-      className="relative inline-flex"
+      className={cn('relative inline-flex', wrapperClassName)}
       onPointerEnter={() => show(200)}
       onPointerLeave={hide}
       onFocus={() => show(0)}

@@ -145,7 +145,7 @@ export default async function ComponentLibrary() {
       </Showcase>
 
       <Showcase id="forms" file="components/ui/form-controls.tsx · field.tsx" notes="Native elements, styled. Field wires label, hint and error to the control with aria-describedby and aria-invalid.">
-        <Example label="Field states" className="grid max-w-3xl gap-5 sm:grid-cols-2">
+        <Example label="Field states" className="grid grid-cols-1 max-w-3xl gap-5 sm:grid-cols-2">
           <Field name="ui-default" label="Default">
             {(c) => <Input {...c} placeholder="Placeholder text" />}
           </Field>
@@ -171,7 +171,7 @@ export default async function ComponentLibrary() {
             {(c) => <Textarea {...c} rows={2} defaultValue="Thank you for your business!" />}
           </Field>
         </Example>
-        <Example label="Checkbox and Switch" className="grid max-w-3xl gap-5 sm:grid-cols-2">
+        <Example label="Checkbox and Switch" className="grid grid-cols-1 max-w-3xl gap-5 sm:grid-cols-2">
           <div className="space-y-3">
             <Checkbox id="ui-check-1" label="Checked" defaultChecked />
             <Checkbox id="ui-check-2" label="With a description" description="Extra detail sits under the label." />
@@ -186,7 +186,7 @@ export default async function ComponentLibrary() {
       </Showcase>
 
       <Showcase id="card" file="components/ui/card.tsx" notes="Built from slots: CardHeader (title, description, actions), CardBody, CardFooter. Use the pieces you need.">
-        <Example label="Header + body + footer" className="grid gap-6 md:grid-cols-2">
+        <Example label="Header + body + footer" className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <Card>
             <CardHeader title="Payment details" description="Shown on every invoice." actions={<Badge tone="brand">Default</Badge>} />
             <CardBody className="text-sm text-muted">Example Bank · 0123456789</CardBody>
@@ -358,7 +358,7 @@ export default async function ComponentLibrary() {
             }
           />
         </Example>
-        <Example label="StatCard: good up, bad up, no change" className="grid gap-4 md:grid-cols-3">
+        <Example label="StatCard: good up, bad up, no change" className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <StatCard label="Revenue this month" value={formatNaira(211_237_500)} icon={<Wallet />} change={{ current: 187, previous: 100, higherIsBetter: true, unit: 'percent' }} />
           <StatCard label="Overdue" value={formatNaira(403_587_500)} icon={<AlertTriangle />} change={{ current: 108, previous: 100, higherIsBetter: false, unit: 'percent' }} />
           <StatCard label="Paid on time" value="67%" change={{ current: 67, previous: 67, higherIsBetter: true, unit: 'points' }} hint="No change" />
@@ -368,7 +368,7 @@ export default async function ComponentLibrary() {
             <RevenueChart months={showcase.months} />
           </Card>
         </Example>
-        <Example label="InvoiceTable + ActivityFeed" className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+        <Example label="InvoiceTable + ActivityFeed" className="grid grid-cols-1 gap-6 lg:grid-cols-[1.6fr_1fr]">
           <Card>
             <InvoiceTable invoices={showcase.recent} caption="Recent invoices" />
           </Card>
@@ -376,7 +376,7 @@ export default async function ComponentLibrary() {
             <ActivityFeed items={sampleActivity} today="2026-10-11" />
           </Card>
         </Example>
-        <Example label="PricingCard (cta slot)" className="grid gap-6 lg:grid-cols-3">
+        <Example label="PricingCard (cta slot)" className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {plans.map((plan) => (
             <PricingCard key={plan.id} plan={plan} cta={<Button block variant={plan.featured ? 'primary' : 'secondary'}>{plan.cta}</Button>} />
           ))}
@@ -384,7 +384,7 @@ export default async function ComponentLibrary() {
         <Example label="FeatureGrid" className="block">
           <FeatureGrid features={features.slice(0, 3)} />
         </Example>
-        <Example label="Testimonial: card and brand tones" className="grid gap-6 md:grid-cols-2">
+        <Example label="Testimonial: card and brand tones" className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <Testimonial testimonial={testimonials[1]} showResult />
           <div className="rounded-card bg-brand p-6">
             <Testimonial testimonial={testimonials[2]} tone="brand" />

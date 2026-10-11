@@ -20,8 +20,8 @@ import type { InvoiceView, SortDir, SortKey } from '@/lib/types'
  *   the /invoices list, Next.js intercepts that link and opens the
  *   quick-view modal (see app/(app)/invoices/@modal).
  * - `empty` is a slot: the caller decides what "no results" says and offers.
- * - Columns that matter least (issued/due dates) hide on phones; the due
- *   date moves under the client name instead.
+ * - Columns that matter least hide on phones; the due date and status
+ *   move under the client name instead, so number, client and amount fit.
  */
 export function InvoiceTable({
   invoices,
@@ -59,7 +59,7 @@ export function InvoiceTable({
           {header('issueDate', 'Issued', { className: 'max-md:hidden' })}
           {header('dueDate', 'Due', { className: 'max-sm:hidden' })}
           {header('total', 'Amount', { align: 'right' })}
-          {header('status', 'Status')}
+          {header('status', 'Status', { className: showClient ? 'max-sm:hidden' : undefined })}
         </TR>
       </THead>
       <TBody>
@@ -83,8 +83,12 @@ export function InvoiceTable({
                   <div className="flex items-center gap-3">
                     <Avatar name={inv.client.name} size="sm" decorative className="max-sm:hidden" />
                     <div className="min-w-0">
-                      <p className="max-w-56 truncate font-medium text-ink">{inv.client.name}</p>
-                      <p className="text-xs text-muted sm:hidden">Due {formatShortDate(inv.dueDate)}</p>
+                      <p className="max-w-28 truncate font-medium text-ink sm:max-w-56">{inv.client.name}</p>
+                      {/* On phones the status column is hidden, so status and due date sit here. */}
+                      <p className="mt-1 flex flex-col items-start gap-1 text-xs text-muted sm:hidden">
+                        <InvoiceStatusBadge status={inv.status} />
+                        Due {formatShortDate(inv.dueDate)}
+                      </p>
                     </div>
                   </div>
                 </TD>
@@ -97,7 +101,7 @@ export function InvoiceTable({
               <TD align="right" className="font-semibold whitespace-nowrap text-ink">
                 {formatNaira(inv.total)}
               </TD>
-              <TD>
+              <TD className={showClient ? 'max-sm:hidden' : undefined}>
                 <InvoiceStatusBadge status={inv.status} />
               </TD>
             </TR>

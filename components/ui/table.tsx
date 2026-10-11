@@ -18,7 +18,10 @@ import { cn } from '@/lib/cn'
 export function Table({ caption, captionHidden, className, children }: { caption: ReactNode; captionHidden?: boolean; className?: string; children: ReactNode }) {
   return (
     // role="region" + aria-label + tabIndex lets keyboard users scroll a wide table.
-    <div role="region" aria-label={typeof caption === 'string' ? caption : undefined} tabIndex={0} className={cn('overflow-x-auto', className)}>
+    // `relative` matters: it makes this the containing block for anything
+    // absolutely positioned inside (sr-only text, stretched-link ::after).
+    // Without it those escape the scroll clipping and widen the whole page.
+    <div role="region" aria-label={typeof caption === 'string' ? caption : undefined} tabIndex={0} className={cn('relative overflow-x-auto', className)}>
       <table className="w-full border-collapse text-left text-sm">
         <caption className={cn('pb-3 text-left font-semibold text-ink', captionHidden && 'sr-only')}>{caption}</caption>
         {children}
@@ -40,11 +43,11 @@ export function TR({ className, ...props }: ComponentProps<'tr'>) {
 }
 
 export function TH({ className, align, ...props }: ComponentProps<'th'> & { align?: 'left' | 'right' }) {
-  return <th scope="col" {...props} className={cn('px-4 py-2.5 font-semibold whitespace-nowrap', align === 'right' && 'text-right', className)} />
+  return <th scope="col" {...props} className={cn('px-2.5 py-2.5 font-semibold whitespace-nowrap sm:px-4', align === 'right' && 'text-right', className)} />
 }
 
 export function TD({ className, align, ...props }: ComponentProps<'td'> & { align?: 'left' | 'right' }) {
-  return <td {...props} className={cn('px-4 py-3 align-middle', align === 'right' && 'text-right tabular-nums', className)} />
+  return <td {...props} className={cn('px-2.5 py-3 align-middle sm:px-4', align === 'right' && 'text-right tabular-nums', className)} />
 }
 
 /**
@@ -82,7 +85,7 @@ export function SortableHeader({
         href={hrefFor(sortKey, nextDir)}
         scroll={false}
         className={cn(
-          'inline-flex w-full items-center gap-1.5 px-4 py-2.5 hover:text-ink',
+          'inline-flex w-full items-center gap-1.5 px-2.5 py-2.5 hover:text-ink sm:px-4',
           align === 'right' && 'justify-end',
           active && 'text-ink',
         )}

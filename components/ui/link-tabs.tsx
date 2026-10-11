@@ -27,7 +27,7 @@ export function LinkTabs({
   className?: string
 }) {
   return (
-    <nav aria-label={label} className={cn('-mx-1 overflow-x-auto', className)}>
+    <nav aria-label={label} className={cn('relative -mx-1 overflow-x-auto', className)}>
       <ul className="flex min-w-max gap-1 border-b border-line px-1">
         {items.map((tab) => {
           const active = tab.key === current

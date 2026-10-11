@@ -26,6 +26,20 @@ export function proxy(request: NextRequest) {
     url.searchParams.set('next', pathname + search)
     return NextResponse.redirect(url)
   }
+
+  // INTERCEPTION EDGE CASE. The quick-view modal, @modal/(.)[id], intercepts
+  // ANY /invoices/<something> navigated to from the list, and for
+  // interception a static folder ("new") does NOT beat the dynamic [id]. So
+  // clicking "New invoice" on /invoices opened an "Invoice not found" modal.
+  // Next.js decides to intercept from the `Next-Url` request header (the
+  // page you're navigating FROM). Dropping it for /invoices/new means "no
+  // page to overlay", so the form always renders as a normal page.
+  if (pathname === '/invoices/new' && request.headers.has('next-url')) {
+    const headers = new Headers(request.headers)
+    headers.delete('next-url')
+    return NextResponse.next({ request: { headers } })
+  }
+
   return NextResponse.next()
 }
 

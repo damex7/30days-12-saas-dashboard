@@ -191,6 +191,12 @@
     background-color: var(--color-scrim);
   }
 
+  /* Lock page scrolling while any modal dialog is open: one CSS rule
+     instead of JavaScript that has to remember to undo itself. */
+  html:has(dialog[open]:modal) {
+    overflow: hidden;
+  }
+
   /* Hide the <details> marker; the FAQ draws its own chevron. */
   summary::-webkit-details-marker {
     display: none;

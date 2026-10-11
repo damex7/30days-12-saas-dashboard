@@ -21,6 +21,7 @@ export function PageHeader({
   description,
   actions,
   breadcrumb,
+  level = 1,
   className,
   children,
 }: {
@@ -28,15 +29,18 @@ export function PageHeader({
   description?: ReactNode
   actions?: ReactNode
   breadcrumb?: ReactNode
+  /** It's the page's <h1> by default; the /ui showcase renders one as an example, at h2. */
+  level?: 1 | 2
   className?: string
   children?: ReactNode
 }) {
+  const Heading = `h${level}` as const
   return (
     <header className={cn('mb-6 sm:mb-8', className)}>
       {breadcrumb && <div className="mb-3 text-sm text-muted print:hidden">{breadcrumb}</div>}
       <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
         <div className="min-w-0">
-          <h1 className="text-2xl font-extrabold text-ink sm:text-3xl">{title}</h1>
+          <Heading className="text-2xl font-extrabold text-ink sm:text-3xl">{title}</Heading>
           {description && <p className="mt-1.5 max-w-2xl text-muted">{description}</p>}
         </div>
         {actions && <div className="flex flex-wrap items-center gap-2 print:hidden">{actions}</div>}

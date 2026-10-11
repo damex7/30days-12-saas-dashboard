@@ -9,7 +9,8 @@ export function seedActivity(invoices: InvoiceView[], today: ISODate): ActivityI
   const events: ActivityItem[] = []
   for (const inv of invoices) {
     const base = { invoiceId: inv.id, clientName: inv.client.name, amount: inv.total }
-    events.push({ ...base, id: `${inv.id}-created`, type: 'created', date: inv.issueDate })
+    // Drafts get a "created" event; for sent invoices, "sent" says it all.
+    if (inv.status === 'draft') events.push({ ...base, id: `${inv.id}-created`, type: 'created', date: inv.issueDate })
     if (inv.sentDate) {
       events.push({ ...base, id: `${inv.id}-sent`, type: 'sent', date: inv.sentDate })
       const viewed = addDays(inv.sentDate, 1)

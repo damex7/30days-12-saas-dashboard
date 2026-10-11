@@ -72,14 +72,14 @@ export function seedInvoices(today: ISODate): Invoice[] {
       unitPrice: services[s].unitPrice,
     }))
 
-    // Status: most past-due invoices got paid (some late); a few are still
-    // outstanding; the newest few are drafts.
+    // Status: almost every old invoice got paid (some late); a few recent
+    // ones are still outstanding; the newest few are drafts.
     let status: Invoice['status'] = 'sent'
     let paidDate: ISODate | undefined
     const r = rand()
     if (daysAgo <= 4 && r < 0.5) {
       status = 'draft'
-    } else if (dueDate < today ? r < 0.86 : r < 0.3) {
+    } else if (dueDate < today ? r < (daysAgo > 150 ? 0.97 : 0.82) : r < 0.3) {
       status = 'paid'
       // Paid between issue and up to 3 weeks late, but never in the future.
       const paidAfter = between(1, terms + (rand() < 0.3 ? 21 : 0))

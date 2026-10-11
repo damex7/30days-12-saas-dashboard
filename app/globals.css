@@ -1,26 +1,246 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * OWÓ DESIGN TOKENS: palette "Cowrie".
+ * Night-teal for trust, cowrie-gold for warmth (cowrie shells were money
+ * across West Africa long before the naira), on a warm off-white page.
+ *
+ * Every token is defined ONCE, here, and every component uses the token
+ * name (bg-surface, text-ink, rounded-card, shadow-pop...), never a raw hex
+ * value. Change a value here and the marketing site, the auth screens, the
+ * app and the /ui showcase all follow.
+ *
+ * LIGHT AND DARK WITHOUT DUPLICATION: each colour holds both values in
+ * `light-dark(light, dark)`. The browser picks one based on the page's
+ * `color-scheme`, which we control from the data-theme attribute below. So
+ * components never need `dark:` classes for colour.
+ */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* `--color-*: initial` removes Tailwind's default palette (red-500, slate-200...),
+   so a stray `bg-blue-600` fails to exist instead of quietly going off-brand. */
+@theme {
+  --color-*: initial;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Surfaces: page, raised (cards, menus), sunken (wells, table headers). */
+  --color-surface: light-dark(#faf7f2, #0b1416);
+  --color-raised: light-dark(#ffffff, #111d20);
+  --color-sunken: light-dark(#f3eee5, #08100f);
+  --color-line: light-dark(#e4ddd0, #22343a);
+  --color-line-strong: light-dark(#cdc3b1, #34494f);
+
+  /* Text. */
+  --color-ink: light-dark(#0f1e22, #e9efed);
+  --color-muted: light-dark(#52615f, #9cadab);
+  --color-subtle: light-dark(#7b8786, #74888a);
+
+  /* Brand: night teal. `brand-ink` is text placed ON a brand background. */
+  --color-brand: light-dark(#0e4d52, #5cbdb5);
+  --color-brand-hover: light-dark(#0a3b3f, #7ad0c9);
+  --color-brand-ink: light-dark(#ffffff, #04211f);
+  --color-brand-soft: light-dark(#ddedeb, #11302f);
+  --color-brand-strong: light-dark(#0b4045, #8fdbd4);
+
+  /* Accent: cowrie gold. Decorative and for highlights, always with dark text. */
+  --color-accent: light-dark(#e8b04b, #f0c46a);
+  --color-accent-ink: #2e2006;
+  --color-accent-soft: light-dark(#fbf0da, #3a2c10);
+
+  /* Invoice status colours (text / soft background). Badges always show the
+     word too, so colour is never the only signal. */
+  --color-paid: light-dark(#13704a, #6fd3a2);
+  --color-paid-soft: light-dark(#e0f2e8, #10301f);
+  --color-sent: light-dark(#2453a8, #8db4f5);
+  --color-sent-soft: light-dark(#e3ebfa, #142544);
+  --color-overdue: light-dark(#b42318, #ff9a8f);
+  --color-overdue-soft: light-dark(#fde5e1, #3d1512);
+  --color-draft: light-dark(#5b6470, #a5adb8);
+  --color-draft-soft: light-dark(#eceef0, #1d262c);
+
+  /* Danger buttons and form errors share the overdue red. */
+  --color-danger: light-dark(#b42318, #ff9a8f);
+  --color-danger-hover: light-dark(#8f1c13, #ffb8b0);
+  --color-danger-ink: light-dark(#ffffff, #2a0805);
+
+  --color-focus: light-dark(#c47f00, #f0c46a);
+  --color-scrim: light-dark(rgb(8 22 24 / 0.55), rgb(0 0 0 / 0.65));
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Typography. The variables come from next/font in app/layout.tsx. */
+  --font-display: var(--font-epilogue), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-reddit-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-reddit-mono), ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  /* Radii: named by what they are for, so a change applies consistently. */
+  --radius-control: 0.625rem; /* buttons, inputs, menu items */
+  --radius-card: 1rem; /* cards, dialogs, panels */
+  --radius-pill: 999px; /* badges, toggles */
+
+  /* Shadows: tinted with the brand teal rather than grey. */
+  --shadow-card: 0 1px 2px rgb(14 77 82 / 0.06), 0 1px 1px rgb(14 77 82 / 0.04);
+  --shadow-raised: 0 8px 24px -8px rgb(14 77 82 / 0.18), 0 2px 6px -2px rgb(14 77 82 / 0.08);
+  --shadow-pop: 0 24px 48px -16px rgb(8 30 33 / 0.35), 0 4px 12px -4px rgb(8 30 33 / 0.12);
+
+  /* Spacing tokens for the app shell. They become utilities like w-sidebar. */
+  --spacing-sidebar: 16rem;
+  --spacing-sidebar-collapsed: 4.5rem;
+  --spacing-topbar: 4rem;
+  --spacing-header: 4.25rem;
+  --spacing-gutter: 1rem;
+  --spacing-gutter-lg: 2rem;
+  --container-content: 76rem;
+  --container-prose: 40rem;
+
+  --breakpoint-xs: 22.5rem; /* 360px: the smallest phone we design for */
+
+  /* Motion. Every animation is switched off for reduced-motion users below. */
+  --animate-fade-in: fade-in 0.35s ease-out both;
+  --animate-rise: rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-pop: pop 0.14s ease-out both;
+  --animate-drawer: drawer 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.97) translateY(-4px); }
+  }
+  @keyframes drawer {
+    from { transform: translateX(-100%); }
+  }
+  @keyframes shimmer {
+    from { background-position: 150% 0; }
+    to { background-position: -50% 0; }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/*
+ * THEME SWITCHING. `color-scheme` decides which side of light-dark() wins.
+ * - No attribute (JavaScript off, or before the toggle is used): follow the OS.
+ * - data-theme="light" | "dark": set before first paint by the script in
+ *   app/layout.tsx, so there is no flash of the wrong theme.
+ */
+:root {
+  color-scheme: light dark;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* For the rare `dark:` that isn't a colour (e.g. swapping an illustration). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* The app sidebar's collapsed state lives on <html> (see app/(app)/layout.tsx),
+   so any element can react to it: `sidebar-collapsed:hidden`. */
+@custom-variant sidebar-collapsed (&:where([data-sidebar="collapsed"] *));
+
+/* The pricing page's monthly/yearly switch sets data-billing on a wrapper. */
+@custom-variant yearly (&:where([data-billing="yearly"] *));
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    overflow-wrap: break-word;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* One clear, consistent focus ring for keyboard users everywhere. Gold
+     reads well on both the teal brand colour and the off-white page. */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+  }
+
+  /* Native <dialog> backdrop uses the scrim token. */
+  dialog::backdrop {
+    background-color: var(--color-scrim);
+  }
+
+  /* Hide the <details> marker; the FAQ draws its own chevron. */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* RESPECT REDUCED MOTION: users who ask the OS for less motion get every
+     animation and transition cut to (almost) zero, everywhere at once. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* PRINT: invoices print on white paper with black text whatever the theme.
+     Chrome that shouldn't print is marked with the `print:hidden` class. */
+  @media print {
+    :root {
+      color-scheme: light !important;
+    }
+    body {
+      background: #fff !important;
+    }
+    * {
+      box-shadow: none !important;
+    }
+    @page {
+      margin: 14mm;
+    }
+  }
+}
+
+/* A shimmer for skeletons: a soft highlight sweeping across the sunken colour. */
+@utility skeleton-shimmer {
+  background-color: var(--color-sunken);
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in oklab, var(--color-raised) 70%, transparent) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
 }

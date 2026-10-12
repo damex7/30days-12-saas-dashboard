@@ -13,7 +13,7 @@
 // - the "mounted" counter below keeps counting instead of restarting;
 // - the sidebar keeps its collapsed/expanded state and scroll position;
 // - while a tab loads, only the area under the tabs shows a skeleton
-//   (settings/loading.tsx), because the header and tabs are outside it.
+//   (each tab's loading.tsx), because the header and tabs are outside it.
 
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/layout/page-header'

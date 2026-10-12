@@ -14,6 +14,7 @@
 // The proxy (proxy.ts) has already sent anyone without the demo cookie to
 // /login, so this layout never reads cookies itself, which keeps it static.
 
+import { InlineScript } from '@/components/layout/inline-script'
 import { Sidebar } from '@/components/layout/sidebar'
 import { sidebarScript } from '@/components/layout/app-nav-items'
 import { TopBar } from '@/components/layout/top-bar'
@@ -26,7 +27,7 @@ export default function AppLayout({ children }: LayoutProps<'/'>) {
   return (
     <>
       {/* Applies the remembered collapsed state before the sidebar paints. */}
-      <script dangerouslySetInnerHTML={{ __html: sidebarScript }} />
+      <InlineScript html={sidebarScript} />
       <div className="flex min-h-dvh">
         <Sidebar />
         <div className="flex min-w-0 flex-1 flex-col">
